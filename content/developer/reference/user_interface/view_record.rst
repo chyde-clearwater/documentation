@@ -45,7 +45,7 @@ caps.
 View types
 ==========
 
-- :ref:`From <reference/user_interface/views/form>` ->
+- :ref:`Form <reference/user_interface/views/form>` ->
   display and edit the data from a single record
 - :ref:`List <reference/user_interface/views/list>` ->
   view and edit multiple records

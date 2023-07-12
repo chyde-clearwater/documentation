@@ -13,22 +13,23 @@ The root element of gantt views is ``<gantt/>``, it has no children but can
 take the following attributes_:
 
 :string:
-  string_ (optional)
+  string_ (default: ``''``)
 
-  View name
+  This view title is displayed only if you open an action that has no name and
+  whose target is 'new' (opening a dialog)
 
 :create:
-  boolean_ (optional)
+  boolean_ (default: ``True``)
 
   Disable/enable record creation on the view.
 
 :edit:
-  boolean_ (optional)
+  boolean_ (default: ``True``)
 
   Disable/enable record editing on the view.
 
 :delete:
-  boolean_ (optional)
+  boolean_ (default: ``True``)
 
   Disable/enable record deletion on the view through the **Action** dropdown.
 
@@ -52,7 +53,7 @@ take the following attributes_:
 ``color``
   name of the field used to color the pills according to its value
 ``decoration-{$name}``
-  `python expression`_ that defines a boolean_
+  `python expression`_ that evaluates to a boolean_
 
   allow changing the style of a cell's text based on the corresponding
   record's attributes.

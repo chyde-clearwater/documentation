@@ -5,7 +5,7 @@
   that perform an action/call a model's method. The buttons which accepts an extra attribute when placed in a `header`:
 
   :display:
-    string_ chooses from ``display`` or ``always``
+    string_ chooses from ``display`` or ``always`` (default: ``display``)
 
     By default, those buttons are only displayed when some records are
     selected, and they apply on the selection. When the attribute ``display``

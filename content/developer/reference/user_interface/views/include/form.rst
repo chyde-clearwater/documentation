@@ -16,46 +16,49 @@ components.
 Optional attributes_ are added on root element ``<form>`` to customize the view.
 
 :string:
-  string_
+  string_ (default: ``''``)
 
-  View name
+  This view title is displayed only if you open an action that has no name and
+  whose target is 'new' (opening a dialog)
 
 :create:
-  boolean_
+  boolean_ (default: ``True``)
 
   Disable/enable record creation on the view.
 
 :edit:
-  boolean_
+  boolean_ (default: ``True``)
 
   Disable/enable record editing on the view.
 
 :duplicate:
-  boolean_
+  boolean_ (default: ``True``)
 
   Disable/enable record duplication on the view through the **Action** dropdown.
 
 :delete:
-  boolean_
+  boolean_ (default: ``True``)
 
   Disable/enable record deletion on the view through the **Action** dropdown.
 
 :js_class:
-  string_
+  string_ (optional)
 
-  Name of the javascript class to use when instantiating the view.
+  Name of the javascript component the webclient will instantiating instead of
+  the form the view.
 
 :disable_autofocus:
-  boolean_
+  boolean_ (default: ``False``)
 
-  Disable automatic focus of the first field in the view.
+  Disable automatic focussing of the first field in the view.
 
 .. _reference/user_interface/views/form/semantic:
 
 Semantic components
 -------------------
 
-Semantic components tie into and allow interaction with the Odoo system.
+Semantic components tie into the Odoo system and allow interaction with it.
+remark: (with the remark style)
 Placeholders are denoted in all caps.
 
 .. _reference/user_interface/views/form/field:
@@ -70,24 +73,26 @@ Placeholders are denoted in all caps.
   </form>
 
 renders (and allow editing of, possibly) a single field of the current
-record. Using several times a field in a form view is supported and the fields
-can receive different values for modifiers 'invisible' and 'readonly'. However,
-the behavior is not guaranteed when several fields exist with different values
-for modifier 'required'. ``<field>`` can have the following attributes:
+record. Using several times a field in a form view is supported and the
+fields can receive different values for modifiers 'invisible' and
+'readonly'. This fields have the same values but can be display
+differentaly. However, the behavior is not guaranteed when several
+fields exist with different values for modifier 'required'. ``<field>``
+can have the following attributes:
 
 :name:
-  string_ :ref:`model <reference/orm/model>` field name (mandatory)
+  string_ (mandatory) :ref:`model <reference/orm/model>` field name
 
   the name of the field to render
 
 :id:
-  string_
+  string_ (optional)
 
   the node id. Useful when there are several occurrences of the same field in
   the view (see ``label`` component below). Default is the field name.
 
 :widget:
-  string_
+  string_ (optional)
 
   fields have a default rendering based on their type
   (e.g. :class:`~odoo.fields.Char`, :class:`~odoo.fields.Many2one`).
@@ -100,7 +105,7 @@ for modifier 'required'. ``<field>`` can have the following attributes:
     <field name="tag_ids" widget="many2many_tags"/>
 
 :options:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a dict_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a dict_ (default: ``{}``)
 
   JSON object specifying configuration option for the field's widget
   (including default widgets)
@@ -110,7 +115,7 @@ for modifier 'required'. ``<field>`` can have the following attributes:
     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'FIELD_NAME', 'no_quick_create': True}"/>
 
 :groups:
-  `Comma-separated values`_ whose choices are the :class:`~odoo.addons.base.models.res_users.Groups` reference
+  `Comma-separated values`_ (optional) whose choices are the :class:`~odoo.addons.base.models.res_users.Groups` reference
 
   only displays the field for specific users
 
@@ -119,7 +124,7 @@ for modifier 'required'. ``<field>`` can have the following attributes:
     <field name="fname" groups="base.group_no_one,!base.group_multi_company"/>
 
 :domain:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a :ref:`reference/orm/domains`
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a :ref:`reference/orm/domains` (default: ``[]``)
 
   for relational fields only, filters to apply when displaying existing
   records for selection
@@ -129,9 +134,11 @@ for modifier 'required'. ``<field>`` can have the following attributes:
     <field name="fname_id" domain="[('fname_a', '=', parent.fname_b)]"/>
 
 :context:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a dict_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a dict_ (default: ``{}``)
 
-  for relational fields only, context to pass when fetching possible values
+  for relational fields only, context to pass when fetching possible values.
+  The default values ``default_FIELD_NAME`` (e.g. ``{'default_name': 'toto'}``) will be used to
+  create the linked record. ``OTHER_BUSINESS_KEY`` is every keys depending of the model/module.
 
   .. code-block:: xml
 
@@ -144,11 +151,9 @@ for modifier 'required'. ``<field>`` can have the following attributes:
       }"/>
 
 :readonly:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a boolean_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
 
-  standard dynamic attributes based on record values. If the value is
-  trully or if the evaluate expression is trully, display the field in both
-  readonly and edit mode, but never make it editable.
+  Whether the field can be modified by the user (``False``) or is read only (``True``).
 
   .. code-block:: xml
 
@@ -156,11 +161,9 @@ for modifier 'required'. ``<field>`` can have the following attributes:
     <field name="fname_b" readonly="name_a in [fname_b, parent.fname_d]"/>
 
 :required:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a boolean_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
 
-  standard dynamic attributes based on record values. If the value is
-  trully or if the evaluate expression is trully, generates an error and
-  prevents saving the record if the field doesn't have a value.
+  Whether the field can be left empty (``False``) or must be set (``True``).
 
   .. code-block:: xml
 
@@ -168,43 +171,48 @@ for modifier 'required'. ``<field>`` can have the following attributes:
     <field name="fname_b" required="fname_c != 3 and fname_a == parent.fname_d"/>
 
 :invisible:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a boolean_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
 
-  standard dynamic attributes based on record values. Hide the field
-  if trully or if the evaluate expression is trully.
+  Whether the field can be visible (``False``) or must be hide (``True``).
+
+  There are two uses for field ``invisible`` attribute:
+
+  * Usability: not to overload the view and to make it easier for the user to read depending on the content;
+  * Technical: fetched by the webclient for evaluating :ref:`python expression <user_interface/views/python_expression>`
 
   .. code-block:: xml
 
-    <field name="fname_a" invisible="True"/>
+    <field name="fname_a" invisible="True"/> <!-- necessary to evaluate invisible attribute of 'fname_b' field -->
     <field name="fname_b" invisible="fname_c != 3 and fname_a == parent.fname_d"/>
+    <field name="fname_c"/>
 
 :nolabel:
-  boolean_
+  boolean_ (default: ``False``)
 
-  don't automatically display the field's label, only makes sense if the
-  field is a direct child of a ``group`` element
+  if ``True``, do not automatically display the field's label, only
+  makes sense if the field is a direct child of a ``group`` element
 
 :placeholder:
-  string_
+  string_ (optional)
 
   help message to display in *empty* fields. Can replace field labels in
   complex forms. *Should not* be an example of data as users are liable to
   confuse placeholder text with filled fields
 
 :mode:
-  `Comma-separated values`_ whose choices are: ``kanban``, ``from``, ``tree``
+  `Comma-separated values`_ (default: ``tree``) whose choices are: ``kanban``, ``from``, ``tree``
 
   for :class:`~odoo.fields.One2many`, display mode (view type) to use for
   the field's linked records. One of ``tree``, ``form``, ``kanban`` or
   ``graph``. The default is ``tree`` (a list display)
 
 :help:
-  string_
+  string_ (optional)
 
   tooltip displayed for users when hovering the field or its label
 
 :class:
-  string_ `HTML class`_
+  string_ (optional) `HTML class`_
 
   `HTML class`_ to set on the generated element.
 
@@ -221,26 +229,27 @@ for modifier 'required'. ``<field>`` can have the following attributes:
   ``oe_avatar``: for image fields, displays images as "avatar" (square, 90x90 maximum size, some image decorations)
 
 :filename:
-  string_
+  string_ (optional)
 
   for binary fields, name of the related field providing the name of the file
 
 :password:
-  boolean_
+  boolean_ (default: ``False``)
 
-  indicates that a :class:`~odoo.fields.Char` field stores a password and
-  that its data shouldn't be displayed
+  if is ``True`` indicates that a :class:`~odoo.fields.Char` field stores a
+  password and that its data shouldn't be displayed
 
 :kanban_view_ref:
-  string_ defined by the pattern: ``%(ADDON.MODEL_view_TYPE)s`` (target the :ref:`view reference <reference/view_record>`)
+  string_ (optional) defined by the pattern: ``%(ADDON.MODEL_view_TYPE)s`` (target the :ref:`view reference <reference/view_record>`)
 
   for opening specific kanban view when selecting records from m2o/m2m in mobile
   environment
 
 :default_focus:
-  boolean_
+  boolean_ (default: ``False``)
 
-  defines the field on which the focus will be made when displaying the form view
+  If True, defines that this field is the fields that will be focussed when the view
+  opens. Cannot be present on more than one field of a view.
 
 .. note::
   :ref:`Relational fields <studio/fields/relational-fields>` node can contain specific
@@ -295,15 +304,19 @@ following attributes:
   :ref:`field <reference/user_interface/views/form/field>` nodes).
 
 :string:
-  string_
+  string_ (default: ``''``)
 
   the label to display. Display the field's label (coming from the field
   definition in the model) by default.
 
 :class:
+  string_ `HTML class`_ (default: ``''``)
+
   same as for :ref:`field <reference/user_interface/views/form/field>` component.
 
 :invisible:
+  :ref:`python expression <user_interface/views/python_expression>` (default: ``False``)
+
   same as for :ref:`field <reference/user_interface/views/form/field>` component.
 
 
@@ -322,7 +335,7 @@ following attributes:
 .. include:: views/include/component_button.rst
 
 :class:
-  string_ `HTML class`_
+  string_ (optional) `HTML class`_
 
   In form view, in addition to the classic behavior, the special class
   ``oe_stat_button`` define a particular rendering in order to
@@ -339,7 +352,7 @@ following attributes:
     </button>
 
 :special:
-  string_ chooses from ``save`` or ``cancel``
+  string_ (optional) chooses from ``save`` or ``cancel``
 
   for form views opened in dialogs: ``save`` to save the record and
   close the dialog, ``cancel`` to close the dialog without saving.
@@ -349,7 +362,7 @@ following attributes:
     <button special="cancel" icon="fa-trash"/>
 
 :confirm:
-  string_
+  string_ (optional)
 
   confirmation message to display (and for the user to accept) before
   performing the button's Odoo call (also works in Kanban views).
@@ -359,7 +372,7 @@ following attributes:
     <button name="action_destroye_gate" string="Send the goa'uld" type="object" confirm="Do you confirm the action?"/>
 
 :data-hotkey:
-  string_ only one char or ``shift+`` + one char
+  string_ (optional) only one char or ``shift+`` + one char
 
   Define a hotkey (`keyboard_shortcut`_ similar to an accesskey_) enable when
   ``alt`` keypress to facilitate access to the action.
@@ -369,6 +382,8 @@ following attributes:
     <button type="object" name="action_tear" string="Tear the sheet" data-hotkey="shift+k"/>
 
 :invisible:
+  :ref:`python expression <user_interface/views/python_expression>` (default: ``False``)
+
   same as for :ref:`field <reference/user_interface/views/form/field>` component.
 
 Messaging features
@@ -443,21 +458,23 @@ Children are laid out horizontally (tries to fill the next column before changin
 ``<group>`` can have the following attributes:
 
 :col:
-  integer_ (default: 2)
+  integer_ (default: ``2``)
 
   number of columns in a ``<group>``
 
 :colspan:
-  integer_ (default: 1)
+  integer_ (default: ``1``)
 
   number of columns taken by an element
 
 :string:
-  string_
+  string_ (default: ``''``)
 
   displayed a group’s title
 
 :invisible:
+  :ref:`python expression <user_interface/views/python_expression>` (default: ``False``)
+
   same as for :ref:`field <reference/user_interface/views/form/field>` component.
 
 Below is a possible structure and the representation of its rendering.
@@ -500,7 +517,7 @@ Below is a possible structure and the representation of its rendering.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``<sheet>`` can be used as a direct child to ``<form>`` for a narrower and more responsive
-form layout. Usually it contains :ref:`<group> <reference/user_interface/views/form/group>`.
+form layout (center page, margin...). Usually it contains :ref:`<group> <reference/user_interface/views/form/group>`.
 
 .. code-block:: xml
 
@@ -531,11 +548,13 @@ child element.
 ``<page>`` can have the following attributes:
 
 :string:
-  string_ (required)
+  string_ (default: ``''``)
 
   the title of the tab
 
 :invisible:
+  :ref:`python expression <user_interface/views/python_expression>` (default: ``False``)
+
   same as for :ref:`field <reference/user_interface/views/form/field>` component.
 
   Can be apply on ``notebook`` and ``page`` nodes.
@@ -617,7 +636,7 @@ Below is a possible structure and the representation of its rendering.
 small horizontal spacing. ``<separator>`` can have the following attributes:
 
 :string:
-  string_
+  string_ (default: ``''``)
 
   the title as a section title
 

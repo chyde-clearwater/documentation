@@ -19,39 +19,40 @@ The root element of list views is ``<tree>``\ [#treehistory]_. The list view's
 root can have the following attributes_:
 
 :string:
-  string_
+  string_ (default: ``''``)
 
-  View name
+  This view title is displayed only if you open an action that has no name and
+  whose target is 'new' (opening a dialog)
 
 :create:
-  boolean_
+  boolean_ (default: ``True``)
 
   Disable/enable record creation on the view.
 
 :edit:
-  boolean_
+  boolean_ (default: ``True``)
 
   Disable/enable record editing on the view.
 
   If the ``edit`` attribute is set to ``false``, the ``editable`` option will be ignored.
 
 :delete:
-  boolean_
+  boolean_ (default: ``True``)
 
   Disable/enable record deletion on the view through the **Action** dropdown.
 
 :import:
-  boolean_
+  boolean_ (default: ``True``)
 
   Disable/enable record import data on the view.
 
 :export_xlsx:
-  boolean_
+  boolean_ (default: ``True``)
 
   Disable/enable record export data on the view.
 
 :editable:
-  string_ chooses from ``top`` or ``bottom``
+  string_ (optional) chooses from ``top`` or ``bottom``
 
   by default, selecting a list view's row opens the corresponding
   :ref:`form view <reference/user_interface/views/form>`. The ``editable`` attributes
@@ -68,22 +69,23 @@ root can have the following attributes_:
   If the ``edit`` attribute is set to ``false``, the ``editable`` option **will be ignored**.
 
 :multi_edit:
-  ``1``
+  ``1`` (optional)
 
-  editable or not editable list can activate the multi-editing feature by defining the
-  `multi_edit="1"`
+  editable or not editable list can activate the multi-editing feature that allows to
+  change the same field to the same value for multiple records in a single operation by
+  defining the ``multi_edit="1"``
 
 :default_group_by:
-  string_ :ref:`model <reference/orm/model>` field name
+  string_ (optional) :ref:`model <reference/orm/model>` field name
 
   whether the list view should be grouped if no grouping is specified via the action or
   the current search. Should be the name of the field to group by when no grouping is
   otherwise specified
 
 :default_order:
-  `Comma-separated values`_
+  `Comma-separated values`_ (optional)
 
-  overrides the ordering of the view, replacing the model's order (:attr:`-odoo.models.BaseModel._order` model attribute).
+  overrides the ordering of the model, replacing the model's order (:attr:`~odoo.models.BaseModel._order` model attribute).
   The value is a comma-separated list of :ref:`fields <reference/orm/fields>`, postfixed by ``desc`` to
   sort in reverse order:
 
@@ -93,15 +95,22 @@ root can have the following attributes_:
       ...
     </tree>
 
-:decoration-{$name}:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a boolean_
+:decoration-bf:
+:decoration-it:
+:decoration-danger:
+:decoration-warning:
+:decoration-info:
+:decoration-muted:
+:decoration-primary:
+:decoration-success:
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
 
   allow changing the style of a cell's text based on the corresponding
-  record's attributes.
+  record's attributes:
 
-  ``{$name}`` can be ``bf`` (``font-weight: bold``), ``it``
-  (``font-style: italic``), or any `bootstrap contextual color`_ (``danger``,
-  ``info``, ``muted``, ``primary``, ``success`` or ``warning``).
+  * ``bf`` for ``font-weight: bold``
+  * ``it`` for ``font-style: italic``
+  * ``danger``, ``info``, ``muted``, ``primary``, ``success`` or ``warning`` add relative `bootstrap contextual color`_.
 
   Define a conditional display of a record in the style of a row's text based
   on the corresponding record's attributes. For each record, the expression is
@@ -115,21 +124,21 @@ root can have the following attributes_:
     </tree>
 
 :limit:
-  integer_
+  integer_ (default: ``80`` for list view and ``40`` for x2many list in form view)
 
   the default size of a page. It must be a positive integer
 
 :groups_limit:
-  integer_
+  integer_ (default: ``80`` for list view and ``40`` for x2many list in form view)
 
   when the list view is grouped, the default number of groups of a page. It must be a
   position integer
 
 :expand:
-  boolean_
+  boolean_ (default: ``False``)
 
   when the list view is grouped, automatically open the first level of groups if set
-  to true (default: false)
+  to true. (Warning: It may be slow depending on the number of groups)
 
 Possible children elements of the list view are: ``button``, ``field``, ``groupby``,
 ``header`` or ``control``
@@ -149,22 +158,22 @@ defines a column where the corresponding field should be displayed for
 each record. Can use the following attributes:
 
 :name:
-  string_ :ref:`model <reference/orm/model>` field name (mandatory)
+  string_ (mandatory) :ref:`model <reference/orm/model>` field name
 
   the name of the field to display in the current model. A given name
   can only be used once per view
 
 :string:
-  string_
+  string_ (optional)
 
   the title of the field's column (by default, uses the ``string`` of
   the model's field)
 
 :optional:
-  string_ chooses from ``hide`` or ``show``
+  string_ (optional) chooses from ``hide`` or ``show``
 
   if set, the visibility of the field is optional. The display can be chosen
-  via a button in the form view. By default fields will be visible if the value
+  via a button in the list view. By default fields will be visible if the value
   is `show` or not visible if `hide`.
 
   .. code-block:: xml
@@ -172,10 +181,10 @@ each record. Can use the following attributes:
     <field name="fname_a" optional="hide"/>
 
 :readonly:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a boolean_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
 
-  standard dynamic attributes based on record values. If the value is trully
-  or if the evaluate expression is trully, display the field in both readonly
+  standard dynamic attributes based on record values. If the value is truthy
+  or if the evaluate expression is truthy, display the field in both readonly
   and edit mode, but never make it editable.
 
   .. code-block:: xml
@@ -184,10 +193,10 @@ each record. Can use the following attributes:
     <field name="fname_b" readonly="name_a in [fname_b, parent.fname_d]"/>
 
 :required:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a boolean_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
 
-  standard dynamic attributes based on record values. If the value is trully
-  or if the evaluate expression is trully, generates an error and prevents
+  standard dynamic attributes based on record values. If the value is truthy
+  or if the evaluate expression is truthy, generates an error and prevents
   saving the record if the field doesn't have a value.
 
   .. code-block:: xml
@@ -196,10 +205,10 @@ each record. Can use the following attributes:
     <field name="fname_b" required="fname_c != 3 and fname_a == parent.fname_d"/>
 
 :invisible:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a boolean_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
 
-  standard dynamic attributes based on record values. Hide the field if trully
-  or if the evaluate expression is trully.
+  standard dynamic attributes based on record values. Hide the field if truthy
+  or if the evaluate expression is truthy.
 
   Fetches and stores the field, but doesn't display the column in the
   table. Necessary for fields which shouldn't be displayed but are
@@ -211,7 +220,7 @@ each record. Can use the following attributes:
     <field name="fname_b" invisible="fname_c != 3 and fname_a == parent.fname_d"/>
 
 :column_invisible:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a boolean_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
 
   Fetches and stores the field, but doesn't display the column in the table.
   Necessary for fields which shouldn't be displayed but are used by e.g.
@@ -228,7 +237,7 @@ each record. Can use the following attributes:
     Only in case of list sub-views (One2many/Many2many display in a form view).
 
 :groups:
-  `Comma-separated values`_ whose choices are the :class:`~odoo.addons.base.models.res_users.Groups` reference
+  `Comma-separated values`_ (optional) whose choices are the :class:`~odoo.addons.base.models.res_users.Groups` reference
 
   lists the groups which should be able to see the field (removed server side
   if the user's groups do not match)
@@ -237,15 +246,22 @@ each record. Can use the following attributes:
 
     <field name="fname" groups="base.group_no_one,!base.group_multi_company"/>
 
-:decoration-{$name}:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a boolean_
+:decoration-bf:
+:decoration-it:
+:decoration-danger:
+:decoration-warning:
+:decoration-info:
+:decoration-muted:
+:decoration-primary:
+:decoration-success:
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
 
   allow changing the style of a cell's text based on the corresponding
-  record's attributes.
+  record's attributes:
 
-  ``{$name}`` can be ``bf`` (``font-weight: bold``), ``it``
-  (``font-style: italic``), or any `bootstrap contextual color`_ (``danger``,
-  ``info``, ``muted``, ``primary``, ``success`` or ``warning``).
+  * ``bf`` for ``font-weight: bold``
+  * ``it`` for ``font-style: italic``
+  * ``danger``, ``info``, ``muted``, ``primary``, ``success`` or ``warning`` add relative `bootstrap contextual color`_.
 
   Define a conditional display of a record in the style of a row's text based on the corresponding
   record's attributes.
@@ -269,7 +285,7 @@ each record. Can use the following attributes:
     </tree>
 
 :widget:
-  string_ chooses from ``handle`` or ``progressbar``
+  string_ (optional) chooses from ``handle`` or ``progressbar``
 
   alternate representations for a field's display. Possible list view
   values are (among others):
@@ -293,7 +309,7 @@ each record. Can use the following attributes:
     </tree>
 
 :sum, avg:
-  string_
+  string_ (optional)
 
   displays the corresponding aggregate at the bottom of the column. The
   aggregation is only computed on *currently displayed* records. The
@@ -308,7 +324,7 @@ each record. Can use the following attributes:
     </tree>
 
 :width:
-  string_/integer_ (for ``editable``)
+  string_/integer_ (for ``editable``) (optional)
 
   when there is no data in the list, the width of a column can be forced
   by setting this attribute. The value can be an absolute width (e.g.
@@ -317,7 +333,7 @@ each record. Can use the following attributes:
   content, and this attribute is thus ignored.
 
 :nolabel:
-  ``1``
+  ``1`` (optional)
 
   if set to "1", the column header will remain empty. Also, the column
   won't be sortable.
@@ -368,6 +384,8 @@ Below is a possible structure and the representation of its rendering.
 .. include:: views/include/component_button.rst
 
 :column_invisible:
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
+
   same as for :ref:`list field <reference/user_interface/views/list/field>` component.
 
 Below is a possible structure and the representation of its rendering.
@@ -416,7 +434,7 @@ records on many2one fields. It is also possible to add ``field``, inside the
 many2one comodel. These extra fields will be fetched in batch.
 
 :name:
-  string_
+  string_ (mandatory) :ref:`model <reference/orm/model>` field name
 
   the name of a many2one field (on the current model). Custom header will be
   displayed when grouping the view on this field name.
@@ -518,12 +536,12 @@ but can have children ``<create>``.
 It can have the following attributes:
 
 :string:
-  string_ (required)
+  string_ (mandatory)
 
   The text displayed on the button.
 
 :context:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a dict_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a dict_ (default: ``{}``)
 
   This context will be merged into the existing context
   when retrieving the default value of the new record.

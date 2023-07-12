@@ -29,92 +29,93 @@ The root element of the Kanban view is ``<kanban>``, it can use the following
 attributes_:
 
 :string:
-  string_ (optional)
+  string_ (default: ``''``)
 
-  View name
+  This view title is displayed only if you open an action that has no name and
+  whose target is 'new' (opening a dialog)
 
 :create:
-  boolean_ (optional)
+  boolean_ (default: ``True``)
 
   Disable/enable record creation on the view.
 
 :edit:
-  boolean_ (optional)
+  boolean_ (default: ``True``)
 
   Disable/enable record editing on the view.
 
 :delete:
-  boolean_ (optional)
+  boolean_ (default: ``True``)
 
   Disable/enable record deletion on the view through the **Action** dropdown.
 
 :default_group_by:
-  string_ :ref:`model <reference/orm/model>` field name
+  string_ (optional) :ref:`model <reference/orm/model>` field name
 
   whether the kanban view should be grouped if no grouping is specified via
   the action or the current search. Should be the name of the field to group
   by when no grouping is otherwise specified
 
 :default_order:
-  string_
+  string_ (optional)
 
   cards sorting order used if the user has not already sorted the records (via
   the list view)
 
 :class:
-  string_ `HTML class`_
+  string_ (optional) `HTML class`_
 
   adds HTML classes to the root HTML element of the Kanban view
 
 :examples:
-  string_
+  string_ (optional)
 
   if set to a key in the `KanbanExamplesRegistry`_, examples on column setups will be available in the grouped kanban view. `Here <https://github.com/odoo/odoo/blob/99821fdcf89aa66ac9561a972c6823135ebf65c0/addons/project/static/src/js/project_task_kanban_examples.js#L27>`_ is an example of how to define those setups.
 
 :group_create:
-  boolean_
+  boolean_ (default: ``True``)
 
-  whether the "Add a new column" bar is visible or not. Default: true.
+  whether the "Add a new column" bar is visible or not.
 
 :group_delete:
-  boolean_
+  boolean_ (default: ``True``)
 
-  whether groups can be deleted via the context menu. Default: true.
+  whether groups can be deleted via the context menu.
 
 :group_edit:
-  boolean_
+  boolean_ (default: ``True``)
 
-  whether groups can be edited via the context menu. Default: true.
+  whether groups can be edited via the context menu.
 
 :archivable:
-  boolean_
+  boolean_ (default: ``True``)
 
   whether records belonging to a column can be archived / restored if an
-  ``active`` field is defined on the model. Default: true.
+  ``active`` field is defined on the model.
 
 :quick_create:
-  boolean_
+  boolean_ (default: ``True``)
 
   whether it should be possible to create records without switching to the
   form view. By default, ``quick_create`` is enabled when the Kanban view is
   grouped by many2one, selection, char or boolean fields, and disabled when not.
 
 :quick_create_view:
-  string_
+  string_ (optional)
 
   :ref:`Form <reference/user_interface/views/form>` view reference, specifying the view used for records quick creation.
 
 :records_draggable:
-  boolean_
+  boolean_ (default: ``True``)
 
-  whether it should be possible to drag records when kanban is grouped. Default: true.
+  whether it should be possible to drag records when kanban is grouped.
 
   Set to ``true`` to always enable it, and to ``false`` to always disable it.
 
 :groups_draggable:
-  boolean_
+  boolean_ (default: ``True``)
 
-  whether it should be possible to resequence colunms when kanban is grouped. Default: true.
+  whether it should be possible to resequence colunms when kanban is grouped.
 
   Set to ``true`` to always enable it, and to ``false`` to always disable it.
 
@@ -140,7 +141,7 @@ the kanban view, it does not need to be pre-declared.
 Fields can use the following attributes:
 
 :name:
-  string_ :ref:`model <reference/orm/model>` field name (mandatory)
+  string_ (mandatory) :ref:`model <reference/orm/model>` field name
 
   the name of the field to fetch
 
@@ -200,7 +201,7 @@ declares a progressbar element to put on top of kanban columns.
 Possible attributes are:
 
 :field:
-  string_ :ref:`model <reference/orm/model>` field name (mandatory)
+  string_ (mandatory) :ref:`model <reference/orm/model>` field name
 
   the name of the field whose values are used to subgroup column's records in
   the progressbar
@@ -212,7 +213,7 @@ Possible attributes are:
   or "muted" colors
 
 :sum_field:
-  string_ :ref:`model <reference/orm/model>` field name
+  string_ (optional) :ref:`model <reference/orm/model>` field name
 
   the name of the field whose column's records' values will be summed and
   displayed next to the progressbar (if omitted, displays the total number of

@@ -43,7 +43,7 @@ The view's root element is ``<map>``. It can have the following attributes:
 ``panel_title``
     String to display as title of the pin list. If not provided, the title is the action's name or "Items" if the view is not in an action.
 ``limit``
-    Maximum number of records to fetch (default: 80). It must be a positive integer.
+    Maximum number of records to fetch (default: ``80``). It must be a positive integer.
 
 The ``<map>`` element can contain multiple ``<field>`` elements. Each ``<field>`` element is interpreted as a line in the pin's popup. The field's attributes are the following:
 

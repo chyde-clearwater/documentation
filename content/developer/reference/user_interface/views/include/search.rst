@@ -15,11 +15,10 @@ Search
   .. image:: views/search.svg
     :class: col-xxl-6
 
-Search views are a break from previous view types in that they don't display
-*content*: although they apply to a specific model, they are used to filter
-other view's content (generally aggregated views
-e.g. :ref:`reference/user_interface/views/list` or :ref:`reference/user_interface/views/graph`). Beyond that
-difference in use case, they are defined the same way.
+Search views are different from other view types: they don't display
+*content*. Although they apply to a specific model, they are used to filter
+another view's content (generally aggregated views
+e.g. :ref:`reference/user_interface/views/list` or :ref:`reference/user_interface/views/graph`).
 
 The root element of search views is ``<search>``. It takes no attributes.
 
@@ -38,23 +37,23 @@ Possible children elements of the list view are: ``field``, ``filter``, ``separa
   </search>
 
 fields define domains or contexts with user-provided values. When search
-domains are generated, field domains are composed with one another and
-with filters using **AND**.
+domains are generated, field domains are joined with each other and
+with filters using the **AND** operator.
 
 Fields can have the following attributes:
 
 :name:
-  string_ :ref:`model <reference/orm/model>` field name (mandatory)
+  string_ (mandatory) :ref:`model <reference/orm/model>` field name (mandatory)
 
   the name of the field to filter on
 
 :string:
-  string_
+  string_ (optional)
 
   the field's label
 
 :operator:
-  string_
+  string_ (default: ``=``)
 
   by default, fields generate domains of the form :samp:`[({name},
   {operator}, {provided_value})]` where ``name`` is the field's name and
@@ -67,7 +66,7 @@ Fields can have the following attributes:
   ``ilike`` for char fields or ``child_of`` for many2one)
 
 :filter_domain:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a :ref:`reference/orm/domains`
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a :ref:`reference/orm/domains` (default: ``False``)
 
   complete domain to use as the field's search domain, can use a
   ``self`` variable to inject the provided value in the custom
@@ -78,7 +77,7 @@ Fields can have the following attributes:
   ``filter_domain`` takes precedence.
 
 :context:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a dict_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a dict_ (default: ``{}``)
 
   allows adding context keys, including the user-provided values (which
   as for ``domain`` are available as a ``self`` variable, an array of
@@ -91,22 +90,22 @@ Fields can have the following attributes:
             ``filter_domain="[]"``
 
 :domain:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a :ref:`reference/orm/domains`
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a :ref:`reference/orm/domains` (default: ``False``)
 
   if the field can provide an auto-completion
   (e.g. :class:`~odoo.fields.Many2one`), filters the possible
   completion results.
 
 :groups:
-  `Comma-separated values`_ whose choices are the :class:`~odoo.addons.base.models.res_users.Groups` reference
+  `Comma-separated values`_ (optional) whose choices are the :class:`~odoo.addons.base.models.res_users.Groups` reference
 
   make the field only available to specific users
 
 :invisible:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a boolean_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
 
   standard dynamic attributes based on record values. Hide the field
-  if trully or if the evaluate expression is trully.
+  if truthy or if the evaluate expression is truthy.
 
   .. code-block:: xml
 
@@ -155,12 +154,12 @@ Filters can have the following attributes:
   the label of the filter
 
 :domain:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a :ref:`reference/orm/domains`
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a :ref:`reference/orm/domains` (default: ``False``)
 
   will be appended to the action's domain as part of the search domain.
 
 :date:
-  string_ :ref:`model <reference/orm/model>` field name
+  string_ (optional) :ref:`model <reference/orm/model>` field name
 
   the name of a field of type ``date`` or ``datetime``.
   Using this attribute has the effect to create
@@ -196,7 +195,7 @@ Filters can have the following attributes:
   Multi selection of options is allowed.
 
 :default_period:
-  string_  chooses from ``today``, ``this_week``, ``this_month``, ``last_month``,
+  string_ (optional)  chooses from ``today``, ``this_week``, ``this_month``, ``last_month``,
   ``antepenultimate_month``, ``fourth_quarter``, ``third_quarter``, ``second_quarter``,
   ``first_quarter``, ``this_year``, ``last_year`` or ``antepenultimate_year``
 
@@ -215,7 +214,7 @@ Filters can have the following attributes:
     <filter name="filter_create_date" date="create_date" string="Creation Date" default_period="this_year,last_year"/>
 
 :context:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a dict_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a dict_ (default: ``{}``)
 
   a Python dictionary, merged into the action's domain to generate the
   search domain
@@ -248,28 +247,28 @@ Filters can have the following attributes:
       :class:`~odoo.fields.Field` attributes documentation.
 
 :name:
-  string_
+  string_ (optional)
 
   logical name for the filter, can be used to :ref:`enable it by default
   <reference/user_interface/views/search/defaults>`, can also be used as
   :ref:`inheritance hook <reference/view_record/inheritance>`
 
 :help:
-  string_
+  string_ (optional)
 
   a longer explanatory text for the filter, may be displayed as a
   tooltip
 
 :groups:
-  `Comma-separated values`_ whose choices are the :class:`~odoo.addons.base.models.res_users.Groups` reference
+  `Comma-separated values`_ (optional) whose choices are the :class:`~odoo.addons.base.models.res_users.Groups` reference
 
   make the field only available to specific users
 
 :invisible:
-  :ref:`python expression <user_interface/views/python_expression>` that defines a boolean_
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
 
   standard dynamic attributes based on record values. Hide the field
-  if trully or if the evaluate expression is trully.
+  if truthy or if the evaluate expression is truthy.
 
   .. code-block:: xml
 
@@ -372,12 +371,12 @@ are specified as direct children of the ``searchpanel`` with tag name ``field``.
   Fields in searchpanel can have the following attributes:
 
   :name:
-    string_ :ref:`model <reference/orm/model>` field name (mandatory)
+    string_ (mandatory) :ref:`model <reference/orm/model>` field name
 
     the name of the field to filter on
 
   :select:
-    string_  chooses from ``one``, ``multi``, ``groups``, ``string``, ``icon`` or ``color``
+    string_ chooses from ``one``, ``multi``, ``groups``, ``string``, ``icon`` or ``color`` (default: ``one``)
 
     determines the behavior and display.
 
@@ -460,7 +459,7 @@ are specified as direct children of the ``searchpanel`` with tag name ``field``.
     will depend on the value currently selected for the field ``department_id``.
 
   :groupby:
-    string_ :ref:`model <reference/orm/model>` field name
+    string_ (optional) :ref:`model <reference/orm/model>` field name
 
     field name of the comodel (only available for many2one and many2many fields). Values will be grouped by that field.
 

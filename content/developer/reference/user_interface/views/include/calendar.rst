@@ -15,22 +15,23 @@ Their root element is ``<calendar>``. Available attributes_ on the
 calendar view are:
 
 :string:
-  string_ (optional)
+  string_ (default: ``''``)
 
-  View name
+  This view title is displayed only if you open an action that has no name and
+  whose target is 'new' (opening a dialog)
 
 :create:
-  boolean_ (optional)
+  boolean_ (default: ``True``)
 
   Disable/enable record creation on the view.
 
 :edit:
-  boolean_ (optional)
+  boolean_ (default: ``True``)
 
   Disable/enable record editing on the view.
 
 :delete:
-  boolean_ (optional)
+  boolean_ (default: ``True``)
 
   Disable/enable record deletion on the view through the **Action** dropdown.
 

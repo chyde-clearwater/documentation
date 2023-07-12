@@ -51,12 +51,12 @@ creates an entry with its logo on the sidebar of the view. It also acts as
 delimiter when searching. ``<app>`` can have the following attributes:
 
 :string:
-  string_
+  string_ (mandatory)
 
-  The "display" name of the application.
+  The name of the application.
 
 :name:
-  string_
+  string_ (mandatory)
 
   The technical name of the application (the name of the module).
 
@@ -67,9 +67,13 @@ delimiter when searching. ``<app>`` can have the following attributes:
   the ``name`` parameter : ``/{name}/static/description/icon.png``.
 
 :groups:
+  `Comma-separated values`_ (optional) whose choices are the :class:`~odoo.addons.base.models.res_users.Groups` reference
+
   same as for :ref:`field <reference/user_interface/views/form/field>` component.
 
 :invisible:
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
+
   same as for :ref:`field <reference/user_interface/views/form/field>` component.
 
 .. _reference/user_interface/views/settings/block:
@@ -104,9 +108,13 @@ a title and a description/help. ``<block>`` can have the following attributes:
   its text.
 
 :groups:
+  `Comma-separated values`_ (optional) whose choices are the :class:`~odoo.addons.base.models.res_users.Groups` reference
+
   same as for :ref:`field <reference/user_interface/views/form/field>` component.
 
 :invisible:
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
+
   same as for :ref:`field <reference/user_interface/views/form/field>` component.
 
 .. _reference/user_interface/views/settings/setting:
@@ -181,9 +189,13 @@ left panel (if it's a boolean field) or on the top of the right panel
   so it's not necessary to hard-code the server version on the arch anymore.
 
 :groups:
+  `Comma-separated values`_ (optional) whose choices are the :class:`~odoo.addons.base.models.res_users.Groups` reference
+
   same as for :ref:`field <reference/user_interface/views/form/field>` component.
 
 :invisible:
+  :ref:`python expression <user_interface/views/python_expression>` that evaluates to a boolean_ (default: ``False``)
+
   same as for :ref:`field <reference/user_interface/views/form/field>` component.
 
 

@@ -1,13 +1,16 @@
 .. _user_interface/views:
 
-=====
-Views
-=====
+=================
+View architecture
+=================
 
 .. _user_interface/views/options:
 
-Generic view options/attributes
-===============================
+Generic view
+============
+
+Options / Attributes
+--------------------
 
 The different view types have a wide variety of attributes allowing customizations of
 the generic behaviors. Some main attributes will be explained here. They do not all have
@@ -16,7 +19,7 @@ an impact on all view types.
 .. todo:: info on create/...
 
 :sample:
-  boolean_ (optional)
+  boolean_ (default: ``False``)
 
   (``kanban`` & ``list`` & ``gantt`` & ``graph`` & ``pivot`` & ``cohort``)
 
@@ -76,16 +79,42 @@ an impact on all view types.
 
 .. _user_interface/views/python_expression:
 
-.. note::
-    In the views architecture, some XML node attributes canuse `python expression`_,
-    in this case this expression is evaluated with the field values of the current view
-    and this other values:
+Python expression
+-----------------
 
-    * ``context``: dict_ with the values of the current view context;
-    * ``uid``: integer_ the id of the current user;
-    * ``today``: string_ the current local date as a string of the form ``YYYY-MM-DD``;
-    * ``now``: string_ same as ``today`` with the addition of the current time. This value is formatted as ``YYYY-MM-DD hh:mm:ss``;
-    * ``parent``: The properties of this "object" refere to the container view values. This magic object is only available for the subviews of :ref:`relational fields <studio/fields/relational-fields>`.
+When evaluating node attributes, e.g. the ``readonly`` modifier, it is possible to 
+provide a **python expression** that will be executed in an environment that has access
+to the following variables:
+
+* ``context``: dict_ with the values of the current view context;
+* ``uid``: integer_ the id of the current user;
+* ``today``: string_ the current local date as a string of the form ``YYYY-MM-DD``;
+* ``now``: string_ same as ``today`` with the addition of the current time. This value is formatted as ``YYYY-MM-DD hh:mm:ss``.
+
+All fields present in the current view (e.g. :ref:`form view <reference/user_interface/views/form>`,
+except for the :ref:`column_invisible in list view <reference/user_interface/views/list/field>`),
+are also accessible in the variables and contain the value of the current record.
+Relational fields are given as a list of ids.
+
+A ``parent`` variable, that is record that referes to the container, is also available inside sub-views of :ref:`relational fields <studio/fields/relational-fields>`.
+
+Examples:
+
+.. code-block:: xml
+
+    <field name="field_a" readonly="True"/>
+    <field name="field_b" invisible="context.get('show_me') and field_a == 4"/>
+
+.. code-block:: xml
+
+    <field name="field_a"/>
+    <field name="x2m">
+        <!-- sub-view -->
+        <form>
+            <field name="field_b" invisible="parent.field_a"/>
+        </form>
+    </field>
+
 
 .. include:: views/include/form.rst
 .. include:: views/include/settings.rst
