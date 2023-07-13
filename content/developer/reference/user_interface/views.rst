@@ -82,7 +82,7 @@ an impact on all view types.
 Python expression
 -----------------
 
-When evaluating node attributes, e.g. the ``readonly`` modifier, it is possible to 
+When evaluating node attributes, e.g. the ``readonly`` modifier, it is possible to
 provide a **python expression** that will be executed in an environment that has access
 to the following variables:
 
