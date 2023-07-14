@@ -3,7 +3,7 @@ GS1 barcode nomenclature
 ========================
 
 `GS1 nomenclature <https://www.gs1us.org/>`_ consolidates multiple pieces of information in a single
-barcode. Each piece needs to follow a specific barcode pattern– which is a defined format of
+barcode. Each piece needs to follow a specific barcode pattern—which is a defined format of
 numbers, letters, special characters, and character length– to ensure proper interpretation of the
 barcode. By scanning the barcode on an unopened box, GS1 nomenclature can identify the product, lot
 number, number of units contained, and more.
@@ -46,12 +46,12 @@ Create GS1 barcode
 ==================
 
 To build GS1 barcodes in Odoo, combine multiple pieces of information using the specified barcode
-pattern. The :abbr:`A.I (application identifier)` indicates the beginning of the barcode. Most
+pattern. The :abbr:`A.I. (application identifier)` indicates the beginning of the barcode. Most
 barcode patterns have a flexible length, unless specified (such as barcodes for dates).
 
 Some patterns must match the exact amount of numeric or letter characters for the rule, and other
 patterns have a flexible length of characters. When the pattern has a flexible length, the
-information should be either placed at the end of the GS1 barcode or either followed by a separator
+information should either be placed at the end of the GS1 barcode or be followed by a separator
 (`\x1D`). Barcode patterns are universally defined and understood by systems interpreting GS1
 barcodes. To describe the patterns concisely, Odoo uses regular expressions. Every barcode pattern
 has an `application identifier <barcode/operations/app-id>`_ (A.I.), which is a required 2-4 digit
@@ -74,7 +74,7 @@ the following barcode patterns are used:
 +------------+--------------------------+--------+-------------------------------+-------------------+
 |    Name    |        Rule Name         | A.I.   |       Barcode Pattern         |   Field in Odoo   |
 +============+==========================+========+===============================+===================+
-| Product    | Global Trade Item Number | 01     | (01)(\\d{14})                 | Barcode field on  |
+| Product    | Global Trade Item Number | 01     | (01)(\\d{14})                 | :guilabel:`Barcode` field on  |
 |            | (GTIN)                   |        |                               | product form      |
 +------------+--------------------------+--------+-------------------------------+-------------------+
 | Quantity   | Variable count of items  | 30     | (30)(\\d{0,8})                | Units field on    |
@@ -89,7 +89,7 @@ Configuration
 
 .. _barcode/gs1_nomenclature/lot-setup:
 
-To track product using lots, first enable the :ref:`Lots and Serial Numbers
+To track products using lots, first enable the :ref:`Lots and Serial Numbers
 <inventory/management/track_products_by_lots>` feature. To do so, navigate to
 :menuselection:`Inventory app --> Configuration --> Settings`. Next, under the
 :guilabel:`Traceability` heading, check the box for :guilabel:`Lots & Serial Numbers`.
@@ -114,7 +114,7 @@ click :guilabel:`Edit`. Then, in the :guilabel:`General Information` tab, fill i
 
 It is also possible to view a list of all products and barcodes. To access this list, go to
 :menuselection:`Inventory --> Configuration --> Settings`. Under the :guilabel:`Barcode` heading,
-click on the :guilabel:`Configure Product Barcodes` button. Enter the 14-digit GTIN into the
+click on the :guilabel:`Configure Product Barcodes` button under the :guilabel:`Barcode Scanner` section. Enter the 14-digit GTIN into the
 :guilabel:`Barcode` column, then click :guilabel:`Save`.
 
 .. image:: gs1_nomenclature/product-barcodes-page.png
@@ -134,7 +134,7 @@ Scan barcode on receipt
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 To confirm correct lot interpretation in Odoo, create a new :abbr:`RFQ (Request for
-Quotation)` in the *Purchase* app. After the order is placed, navigate to the *Barcode* app to
+Quotation)` in the :menuselection:`Purchase` app. After the order is placed, navigate to the :menuselection:`Barcode` app to
 manage the :ref:`receipt picking <barcode/operations/scan-received-products>`. From the
 :guilabel:`Barcode Scanning` dashboard, click the :guilabel:`Operations` button, then the
 :guilabel:`Receipts` button to view list of vendor receptions to process. Click on the
@@ -198,12 +198,12 @@ button.
       )
 
 Alternatively, scan the barcode containing the product, lot number, and quantity to complete the
-receipt operation in fewer scans.
+receipt operation in fewer steps.
 
 Product + non-unit quantity
 ---------------------------
 
-To build a GS1 barcode that contains products measured in kilograms, for example, the following
+To build a GS1 barcode that contains products measured in a non-unit quantity, like kilograms, for example, the following
 barcode patterns are used:
 
 +------------+--------------------------+----------+-------------------+-------------------+
@@ -226,7 +226,7 @@ purchased.
 .. seealso::
    :ref:`Simplify vendor unit conversions with UoMs<inventory/products/uom-example>`
 
-After the order is placed, navigate to the *Barcode* app to receive the :ref:`vendor shipment
+After the order is placed, navigate to the :menuselection:`Barcode` app to receive the :ref:`vendor shipment
 <barcode/operations/scan-received-products>`.
 
 .. example::
@@ -234,8 +234,8 @@ After the order is placed, navigate to the *Barcode* app to receive the :ref:`ve
    barcode. If `52.1 / 52.1` :guilabel:`kg` appears on the page, this means the reception was
    processed without issue. Finally, press :guilabel:`Validate`.
 
-   Note: the :abbr:`A.I. (application identifier)` for kilograms, `310`+ `1`, was used to represent
-   `52.1`` kg as a barcode: `000521`. This is because the `1` represents how many digits from the
+   Note: the :abbr:`A.I. (application identifier)` for kilograms, `310` + `1`, was used to represent
+   `52.1` kg as a barcode: `000521`. This is because the `1` represents how many digits from the
    right to place the decimal.
 
    .. image:: gs1_nomenclature/scan-barcode-peaches.png
@@ -266,10 +266,10 @@ For additional verification purposes, the quantities of received products are al
 Reporting --> Product Moves`.
 
 The items on the :guilabel:`Product Moves` report are grouped by product by default. To confirm the
-received quantities, select the product's collapsable drop-down menu (:guilabel:`▶ (right arrow)`),
+received quantities, click on a product line to open its collapsible drop-down menu,
 which displays a list of *stock move lines* for the product. The latest stock move matches the
-warehouse reception reference number (`WH/IN/00013`) and quantity processed in the barcode scan,
-demonstrating that the records processed in the Barcode app were properly stored in Inventory.
+warehouse reception reference number (e.g. `WH/IN/00013`) and quantity processed in the barcode scan,
+demonstrating that the records processed in the *Barcode* app were properly stored in *Inventory*.
 
 .. image:: gs1_nomenclature/stock-moves-peach.png
    :align: center
@@ -287,20 +287,20 @@ list.
 
 .. warning::
    While the new field will be read, the information won't link to an existing field in Odoo without
-   developer customizations. However, adding new rules is still useful to ensuring the rest of the
+   developer customizations. However, adding new rules is still useful to ensure the rest of the
    fields in the barcode are interpreted correctly.
 
-Begin by turning on :ref:`developer mode <developer-mode>` and navigate to the :guilabel:`Barcode
+Begin by turning on :ref:`developer mode <developer-mode>` and navigating to the :guilabel:`Barcode
 Nomenclatures` list in :menuselection:`Inventory app --> Configuration --> Barcode Nomenclatures`.
-Then, select :guilabel:`Default GS1 Nomenclature` list item.
+Then, select the :guilabel:`Default GS1 Nomenclature` list item.
 
 On the :guilabel:`Default GS1 Nomenclature` page, select :guilabel:`Add a line` at the bottom of the
-pop-up table, which opens a new window. The :guilabel:`Rule Name` field is used internally to
+table, which opens a window to create a new rule. The :guilabel:`Rule Name` field is used internally to
 identify what the barcode represents. The barcode :guilabel:`Types` are different classifications of
 information that can be understood by the system (e.g. product, quantity, best before date, package,
 coupon). The :guilabel:`Sequence` represents the priority of the rule; this means the smaller the
 value, the higher the rule appears on the table. Odoo follows the sequential order of this table and
-will use the first rule it matches with the following sequence. The :guilabel:`Barcode Pattern` is
+will use the first rule it matches based on the sequence. The :guilabel:`Barcode Pattern` is
 how the sequence of letters or numbers is recognized by the system to contain information about the
 product.
 
@@ -315,13 +315,13 @@ Barcode troubleshooting
 Since GS1 barcodes are challenging to work with, here are some checks to try when the barcodes are
 not working as expected:
 
-#. :guilabel:`Barcode Nomenclature` is set as :menuselection:`Default GS1 Nomenclature`. Jump to
-   :ref:`section <barcode/set-up-barcode-nomenclature>` for more details.
+#. The :guilabel:`Barcode Nomenclature` setting is set as :menuselection:`Default GS1 Nomenclature`. Jump to
+   :ref:`this section <barcode/set-up-barcode-nomenclature>` for more details.
 #. Ensure that the fields scanned in the barcode are enabled in Odoo. For example, to scan a barcode
    containing lots and serial numbers, make sure the :guilabel:`Lots & Serial Numbers` feature is
    enabled in :ref:`Odoo's settings <barcode/gs1_nomenclature/lot-setup>` and :ref:`on the product
    <barcode/gs1_nomenclature/lot-setup-on-product>`.
-#. Omit punctuation such as parentheses `()` or brackets `[]` between the :abbr:`A.I (Application
+#. Omit punctuation such as parentheses `()` or brackets `[]` between the :abbr:`A.I. (Application
    Identifier)` and the barcode sequence. These are typically used in examples for ease of reading
    and should **not** be included in the final barcode. For more details on building GS1 barcodes,
    go to :ref:`this section <barcode/create-GS1-barcode>`.
@@ -391,6 +391,6 @@ character.
 +---------------------------------+-------------+------------------------------+--------------------+--------------------+
 | Net volume: cubic feet (ft^3)   | Quantity    | (365[0-5])(\\d{6})           | Measure            | Qty in ft^3        |
 +---------------------------------+-------------+------------------------------+--------------------+--------------------+
-| Packaging type                  | Packaging   | (91)                         | Alpha-numeric name | Package typ        |
+| Packaging type                  | Packaging   | (91)                         | Alpha-numeric name | Package type        |
 |                                 | Type        | ([!"%-/0-9:-?A-Z_a-z]{0,90}) |                    |                    |
 +---------------------------------+-------------+------------------------------+--------------------+--------------------+
